@@ -1,3 +1,11 @@
+/*
+Implementation of a linear queue in C. This data structure is FIFO (first in, first out). Enqueueing
+appends new nodes to the tail, while dequeueing removes nodes from the head.
+
+This implementation uses a linked list (every node points to the node after it). Therefore, there is
+no fixed length array to contain the nodes.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>  // enables use of bool type
@@ -21,17 +29,19 @@ void init_queue(linear_queue *q) {
 
 bool enqueue(linear_queue *q, int value) {
     // create new node
-    node *new_node = malloc(sizeof(node));  // get pointer to memory we allocated to the variabl new_node
+    node *new_node = malloc(sizeof(node));  // get pointer to memory we allocated to the variable new_node
     if (new_node == NULL) {  // malloc failed; no memory remaining
         return false;
     }
     new_node->value = value;
     new_node->next = NULL;  // new node has nothing after it
 
-    // if there's a tail, connect the tail to the new node
+    // if queue isn't empty, connect point the no-longer-tail-node to the new tail node
     if (q->tail != NULL) {
-        q->tail->next = new_node;  // old tail points to new node
+        q->tail->next = new_node;
     }
+
+    // set the new tail node
     q->tail = new_node;
 
     // if queue was empty, new node is head
@@ -49,8 +59,6 @@ int dequeue(linear_queue *q) {
     }
 
     // save value of head of queue that we're gonna return
-    // node *tmp = q->head;
-    // int value = tmp->value;
     int value = q->head->value;
 
     // take the head off the queue
@@ -61,7 +69,7 @@ int dequeue(linear_queue *q) {
         q->tail = NULL;
     }
 
-    // return the former head of queue
+    // return value of the former head of queue
     return value;
 }
 
