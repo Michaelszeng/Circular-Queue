@@ -32,10 +32,10 @@ bool enqueue(circular_queue *q, int value) {
         return false;
     }
 
-    bool empty = isEmpty(q);
+    bool was_empty = isEmpty(q);
 
     // if queue isn't empty, connect point the no-longer-tail-node to the new tail node
-    if (!empty) {
+    if (!was_empty) {
         q->tail->next = new_node;
     }
 
@@ -46,7 +46,7 @@ bool enqueue(circular_queue *q, int value) {
     q->tail = new_node;
 
     // if queue was empty, new node is head
-    if (empty) {
+    if (was_empty) {
         q->head = new_node;
     }
 
@@ -72,14 +72,8 @@ int dequeue(circular_queue *q) {
     // take the head off the queue
     q->head = q->head->next;
 
-    // if the queue is now empty, set tail to NULL
-    if (isEmpty(q)) {
-        q->tail = NULL;
-    }
-    else {
-        // bc this is a circular queue, new tail node next points to head of queue
-        q->tail->next = q->head;  
-    }
+    // bc this is a circular queue, tail node next points to new head of queue
+    q->tail->next = q->head;  
 
     // return value of the former head of queue
     return value;
@@ -97,6 +91,7 @@ int main() {
     circular_queue q1;
 
     init_queue(&q1);
+
     enqueue(&q1, 52);
     enqueue(&q1, 22);
     printf("%d\n", dequeue(&q1));
@@ -106,5 +101,6 @@ int main() {
     printf("%d\n", dequeue(&q1));
     printf("%d\n", dequeue(&q1));
     enqueue(&q1, 44);
+    printf("%d\n", dequeue(&q1));
     printf("%d\n", dequeue(&q1));
 }
