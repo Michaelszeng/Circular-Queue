@@ -32,8 +32,10 @@ bool enqueue(circular_queue *q, int value) {
         return false;
     }
 
+    bool empty = isEmpty(q);
+
     // if queue isn't empty, connect point the no-longer-tail-node to the new tail node
-    if (q->tail != NULL) {
+    if (!empty) {
         q->tail->next = new_node;
     }
 
@@ -44,7 +46,7 @@ bool enqueue(circular_queue *q, int value) {
     q->tail = new_node;
 
     // if queue was empty, new node is head
-    if (q->head == NULL) {
+    if (empty) {
         q->head = new_node;
     }
 
@@ -53,7 +55,7 @@ bool enqueue(circular_queue *q, int value) {
 
 int dequeue(circular_queue *q) {
     // if queue is empty, return -1
-    if (q->head == NULL) {
+    if (isEmpty(q)) {
         return -1;
     }
 
@@ -71,7 +73,7 @@ int dequeue(circular_queue *q) {
     q->head = q->head->next;
 
     // if the queue is now empty, set tail to NULL
-    if (q->head == NULL) {
+    if (isEmpty(q)) {
         q->tail = NULL;
     }
     else {
@@ -84,10 +86,11 @@ int dequeue(circular_queue *q) {
 }
 
 int isEmpty(circular_queue *q) {
-    // if queue is empty, return -1
+    // if queue is empty, return 1
     if (q->head == NULL) {
-        return -1;
+        return 1;
     }
+    return 0;
 }
 
 int main() {
